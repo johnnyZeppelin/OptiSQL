@@ -901,7 +901,7 @@ def collate_fn(batch):
     }
 
 training_args = TrainingArguments(
-    output_dir="./deepseekocr_spider_finetune",
+    output_dir="/home/jovyan/shared/sifanli/tocr/deepseekocr_spider_finetune",
     per_device_train_batch_size=1,
     gradient_accumulation_steps=16,
     learning_rate=2e-5,

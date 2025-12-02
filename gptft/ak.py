@@ -186,3 +186,58 @@ trainer = Trainer(
 
 trainer.train()
 trainer.save_model("./deepseek_ocr_spider_lora")
+
+
+
+
+
+
+
+
+
+
+
+
+
+    """
+    Returns generated SQL string.
+    - processor: AutoProcessor from model repo
+    - model: AutoModelForCausalLM (or compatible)
+    - schema: schema dict (contains "table_names", etc)
+    - samples: dict table-> (cols, rows)
+    - question: text
+    - gen_kwargs: kwargs to pass to model.generate
+    """
+
+
+
+
+
+
+
+"""
+    If you have taoyds/spider cloned at spider_root, you can call its evaluate.py
+    gold_sql_path: path to gold *.sql for the split (or JSON form expected by their script)
+    pred_sql_path: path to predictions file in the format their eval expects.
+    Typically, the official evaluator expects a mapping file format; check the spider repo README.
+    This function just shows how to call it as a subprocess.
+    """
+
+
+input_text = """
+[QUESTION]
+Find the name of the singer who has the highest age.
+
+[SCHEMA]
+Database: concert_singer
+Table: singer
+Column: singer.Name
+Column: singer.Age
+Column: singer.Country
+
+[TASK]
+Generate SQL corresponding to the question.
+"""
+
+
+
