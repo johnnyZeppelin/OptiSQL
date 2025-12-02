@@ -19,7 +19,7 @@ from transformers import (
 #                   CONFIG
 # ============================================================
 
-DATA_ROOT = "/path/to/spider"
+DATA_ROOT = "/home/jovyan/shared/sifanli/tocr/rawdata/spider_data"
 MODEL_NAME = "deepseek-ai/DeepSeek-OCR"
 FONT_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"  # change if needed
 
