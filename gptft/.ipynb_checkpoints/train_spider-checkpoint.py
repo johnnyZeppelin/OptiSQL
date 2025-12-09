@@ -884,7 +884,7 @@ def collate_fn(batch):
         
         input_ids = torch.cat([prompt_ids, completion_ids])
         labels = input_ids.clone()
-        labels[:len(prompt_ids)] = -100 
+        labels[:len(prompt_ids)] = -100
         
         input_ids_list.append(input_ids)
         labels_list.append(labels)

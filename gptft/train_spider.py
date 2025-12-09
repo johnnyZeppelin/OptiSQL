@@ -884,7 +884,7 @@ def collate_fn(batch):
         
         input_ids = torch.cat([prompt_ids, completion_ids])
         labels = input_ids.clone()
-        labels[:len(prompt_ids)] = -100 
+        labels[:len(prompt_ids)] = -100
         
         input_ids_list.append(input_ids)
         labels_list.append(labels)
@@ -910,7 +910,7 @@ training_args = TrainingArguments(
     save_steps=500,
     fp16=False, # Must match model dtype if using manual tensors
     bf16=True,  # Recommended for bfloat16 models
-    remove_unused_columns=False 
+    remove_unused_columns=False
 )
 
 trainer = Trainer(
