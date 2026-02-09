@@ -1,0 +1,17 @@
+model:
+  token_budget: 256
+  decoder_name: gpt2
+train:
+  lr_decoder: 1e-4
+  lr_encoder: 5e-6
+  weight_decay: 0.1
+  warmup_ratio: 0.05
+  max_steps: 10000
+  global_batch: 256
+render:
+  base_style_id: base
+  style_pool_size: 4
+  transpose_prob: 0.3
+data:
+  max_rows: 1000
+  split: train
