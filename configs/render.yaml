@@ -1,0 +1,8 @@
+base_style:
+  font_family: Arial
+  font_size: 16
+  header_bg: "#f2f2f2"
+  stripe_bg: "#fafafa"
+  border_color: "#333"
+  padding_px: 6
+  header_bold: true
