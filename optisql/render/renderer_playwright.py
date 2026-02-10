@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
+
 from playwright.sync_api import sync_playwright
 
 from optisql.render.html_templates import RenderStyle, render_table_html
@@ -38,8 +40,6 @@ def render_table_to_image(
             raise RuntimeError("Failed to get bounding box for table.")
         header = page.query_selector("#optisql-table thead")
         header_bbox = header.bounding_box() if header else bbox
-        if header_bbox is None:
-            header_bbox = bbox
         clip = {
             "x": bbox["x"],
             "y": bbox["y"],

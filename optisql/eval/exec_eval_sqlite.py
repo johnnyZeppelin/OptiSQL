@@ -40,15 +40,9 @@ def execute_with_timeout(db_path: str, sql: str, timeout_s: float = 10.0) -> Exe
     return queue.get() if not queue.empty() else ExecResult(ok=False, rows=None, error="no_result")
 
 
-def _normalize_value(value: Any) -> Any:
-    if isinstance(value, float):
-        return round(value, 6)
-    return value
-
-
 def compare_results(result_a: ExecResult, result_b: ExecResult) -> bool:
     if not result_a.ok or not result_b.ok:
         return False
-    rows_a = sorted(tuple(_normalize_value(v) for v in row) for row in (result_a.rows or []))
-    rows_b = sorted(tuple(_normalize_value(v) for v in row) for row in (result_b.rows or []))
+    rows_a = sorted(result_a.rows or [])
+    rows_b = sorted(result_b.rows or [])
     return rows_a == rows_b

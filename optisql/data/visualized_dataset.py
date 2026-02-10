@@ -40,12 +40,11 @@ class VisualizedDataset:
         images = item.get("images", {})
         base = images.get("base")
         styles = images.get("styles", [])
-        transpose = item.get("transpose")
+        transpose = images.get("transpose", {})
         use_transpose = self.p_transpose > 0 and transpose and random.random() < self.p_transpose
-        if use_transpose and transpose:
-            transpose_images = transpose.get("images", [])
-            base = transpose_images[0] if transpose_images else base
-            styles = transpose_images[1:] if len(transpose_images) > 1 else styles
+        if use_transpose:
+            base = transpose.get("base", base)
+            styles = transpose.get("styles", styles)
         if styles and self.p_style >= 1.0:
             chosen = random.choice(styles)
         elif styles and random.random() < self.p_style:
@@ -54,10 +53,7 @@ class VisualizedDataset:
             chosen = base
         if not chosen:
             raise ValueError("No image path available in manifest entry.")
-        render_meta = item.get("render_meta", {})
-        if use_transpose and transpose and transpose.get("render_meta"):
-            render_meta = transpose.get("render_meta", render_meta)
-        return self.images_root / chosen, render_meta
+        return self.images_root / chosen, item.get("render_meta", {})
 
     def __getitem__(self, idx: int) -> VisualizedSample:
         item = self.samples[idx]
