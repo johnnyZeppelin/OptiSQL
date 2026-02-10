@@ -58,12 +58,3 @@ def build_table_grid(
             formatted = [str(idx)] + formatted
         formatted_rows.append(formatted)
     return TableGrid(headers=headers, rows=formatted_rows, row_index=include_row_index)
-
-
-def transpose_grid(grid: TableGrid) -> TableGrid:
-    if not grid.rows:
-        return TableGrid(headers=grid.headers, rows=grid.rows, row_index=grid.row_index)
-    transposed_rows = list(map(list, zip(*([grid.headers] + grid.rows))))
-    new_headers = transposed_rows[0]
-    new_rows = transposed_rows[1:]
-    return TableGrid(headers=new_headers, rows=new_rows, row_index=grid.row_index)

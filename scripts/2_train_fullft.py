@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-import numpy as np
 import torch
 from torch.utils.data import DataLoader
 
@@ -26,12 +25,7 @@ def main() -> None:
 
     def collate(batch):
         return {
-            "images": torch.stack(
-                [
-                    torch.from_numpy(np.array(sample.image)).permute(2, 0, 1).float() / 255
-                    for sample in batch
-                ]
-            ),
+            "images": torch.stack([torch.tensor(sample.image).permute(2, 0, 1).float() / 255 for sample in batch]),
             "questions": [sample.question for sample in batch],
             "sql": [sample.sql for sample in batch],
         }
