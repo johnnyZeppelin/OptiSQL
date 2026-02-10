@@ -1,0 +1,9 @@
+torch
+transformers
+pillow
+sqlglot
+pyyaml
+tqdm
+numpy
+playwright
+requests
