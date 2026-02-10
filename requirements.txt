@@ -6,3 +6,4 @@ pyyaml
 tqdm
 numpy
 playwright
+requests

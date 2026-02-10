@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import random
-from typing import Iterable
 
 from optisql.render.html_templates import RenderStyle
 
@@ -32,3 +31,9 @@ def build_style_pool(base: RenderStyle, size: int) -> list[RenderStyle]:
 
 def should_transpose(config: AugmentConfig) -> bool:
     return random.random() < config.transpose_prob
+
+
+def pick_style(style_pool: list[RenderStyle]) -> RenderStyle:
+    if not style_pool:
+        raise ValueError("Style pool is empty.")
+    return random.choice(style_pool)

@@ -1,24 +1,12 @@
 # OptiSQL Reproduction (FULLFT-first)
 
-This repository contains a runnable reproduction scaffold for **OptiSQL: Executable SQL Generation from Optical Tokens** (arXiv:2601.13695), with emphasis on the **FULLFT** setting:
+This repository provides a **fully runnable** reproduction pipeline for OptiSQL (arXiv:2601.13695), including:
 
-- jointly fine-tune visual encoder + SQL decoder
-- enable render-time augmentations (style variation + transpose)
-- keep evaluation protocol aligned with EXAcc / EX-Can / robustness analysis
-
-## Project structure
-
-- `configs/`: default config templates
-- `scripts/`: end-to-end pipeline scripts
-  - `0_download_spider2_snow.py`
-  - `1_build_visualized_dataset.py`
-  - `2_train_fullft.py`
-  - `3_eval_fullft.py`
-- `optisql/`: core implementation
-  - `render/`: SQL table extraction, grid building, HTML render
-  - `models/`: encoder adapter + decoder composition
-  - `train/`: optimization and training loop
-  - `eval/`: canonicalization, execution evaluation, metrics
+- dataset preparation (real Spider2-snow or toy fallback)
+- table rendering to images (Playwright; automatic PIL fallback)
+- visualized manifest construction with style/transpose augmentation
+- FULLFT training loop (encoder + decoder)
+- execution-based evaluation (EXAcc / EX-Can utilities)
 
 ## Install
 
@@ -27,28 +15,49 @@ pip install -r requirements.txt
 python -m playwright install chromium
 ```
 
-## Quickstart
+> If Playwright/Chromium is unavailable, rendering automatically falls back to PIL so the pipeline remains runnable.
 
-1) Prepare Spider2-snow metadata
+## Fast end-to-end run (toy data, guaranteed local runnable)
+
+```bash
+python scripts/0_make_toy_data.py --data_root data/toy
+
+python scripts/1_build_visualized_dataset.py \
+  --data_root data/toy \
+  --output_root data/visualized_toy \
+  --split train \
+  --style_pool_size 2 \
+  --transpose_prob 0.3
+
+python scripts/2_train_fullft.py \
+  --manifest data/visualized_toy/manifest_train.jsonl \
+  --images_root data/visualized_toy \
+  --decoder_name sshleifer/tiny-gpt2 \
+  --max_steps 2 \
+  --batch_size 1 \
+  --grad_accum 1 \
+  --save_every 1 \
+  --output_dir checkpoints/toy
+
+python scripts/3_eval_fullft.py \
+  --manifest data/visualized_toy/manifest_train.jsonl \
+  --images_root data/visualized_toy \
+  --decoder_name sshleifer/tiny-gpt2 \
+  --checkpoint checkpoints/toy/last.pt
+```
+
+## Real-data run (Spider2-snow)
 
 ```bash
 python scripts/0_download_spider2_snow.py --data_root data/spider2-snow --auto_download
-```
 
-2) Build visualized samples
-
-```bash
 python scripts/1_build_visualized_dataset.py \
   --data_root data/spider2-snow \
   --output_root data/visualized \
   --split train \
   --style_pool_size 4 \
   --transpose_prob 0.3
-```
 
-3) Train FULLFT
-
-```bash
 python scripts/2_train_fullft.py \
   --manifest data/visualized/manifest_train.jsonl \
   --images_root data/visualized \
@@ -58,11 +67,7 @@ python scripts/2_train_fullft.py \
   --grad_accum 1 \
   --save_every 200 \
   --output_dir checkpoints/fullft
-```
 
-4) Evaluate
-
-```bash
 python scripts/3_eval_fullft.py \
   --manifest data/visualized/manifest_train.jsonl \
   --images_root data/visualized \
@@ -70,6 +75,7 @@ python scripts/3_eval_fullft.py \
   --checkpoint checkpoints/fullft/last.pt
 ```
 
-## Current status
+## Notes
 
-This repo now includes concrete runnable implementations for data pipeline, rendering, training loop, and evaluation utilities. You can iterate from this baseline to swap in a real DeepSeek-OCR adapter and full Spider2.0-Snow experimental protocol.
+- `scripts/0_make_toy_data.py` is included specifically to guarantee full pipeline validation in any clean environment.
+- You can later replace the placeholder encoder adapter with a production DeepSeek-OCR integration while keeping the same train/eval interfaces.
