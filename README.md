@@ -1,8 +1,8 @@
 # OptiSQL Reproduction (FULLFT-first)
 
-This repository provides a **fully runnable** reproduction pipeline for OptiSQL (arXiv:2601.13695), including:
+This repository provides a pipeline for OptiSQL (arXiv:2601.13695), including:
 
-- dataset preparation (real Spider2-snow or toy fallback)
+- dataset preparation (real Spider2-snow and a toy fallback)
 - table rendering to images (Playwright; automatic PIL fallback)
 - visualized manifest construction with style/transpose augmentation
 - FULLFT training loop (encoder + decoder)
