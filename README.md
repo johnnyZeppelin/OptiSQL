@@ -1,4 +1,4 @@
-# OptiSQL Reproduction (FULLFT-first)
+# OptiSQL
 
 This repository provides a pipeline for OptiSQL (arXiv:2601.13695), including:
 
